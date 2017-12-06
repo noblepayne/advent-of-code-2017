@@ -1,6 +1,5 @@
 (ns advent-of-code-2017.day3.1
-  (:gen-class
-    (:require [clojure.math.combinatorics :as combo])))
+  (:gen-class))
 
 ;;   teribble 3
 
@@ -30,8 +29,12 @@
 
 
 (defn dist-cycle [n]
-  (range (min-dist n)
-         (inc (max-dist n))))
+  (let [mi (min-dist n)
+        ma (max-dist n)
+        p2 (range mi (inc ma))
+        p1 (->> p2 (drop 1) reverse (drop 1))
+        f  (concat p1 p2)]
+    f))
 
 (defn thing [n]
   (zipmap (make-ring n)
@@ -39,6 +42,24 @@
           ))
 
 
+(defn distance-to-port [n]
+  (let [m    (find-row n)
+        ring (make-ring m)
+        dist (dist-cycle m)
+        dmap (zipmap
+              ring
+              (cycle dist))]
+    (get dmap n)))
+
+
+
+(defn )
+
+
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 (defn anagrams? [w1 w2]
