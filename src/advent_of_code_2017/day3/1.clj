@@ -43,18 +43,13 @@
 
 
 (defn distance-to-port [n]
-  (let [m    (find-row n)
+ must decipher. (let [m    (find-row n)
         ring (make-ring m)
         dist (dist-cycle m)
         dmap (zipmap
               ring
               (cycle dist))]
     (get dmap n)))
-
-
-
-(defn )
-
 
 
 
