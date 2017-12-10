@@ -15,7 +15,7 @@
 
 (defn solve-puzzle [puzzle-input]
   (reduce get-new-state
-          {:erase? false :garbage? false :depth 0 :count 0 :gcount 0}
+          {:erase? false :garbage? false :depth 0 :count 0 :gcount 0}  ;; initial state
           puzzle-input))
 
 (comment
