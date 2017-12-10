@@ -2,47 +2,20 @@
   (:require [clojure.core.match :refer [match]]
             [clojure.pprint :refer [pprint]]))
 
-(defn get-new-state [new-char state]
+(defn get-new-state [state new-char]
   (match [new-char state]
-    [_  {::erase?   true       ;; erase one character
-         ::garbage? true}]     (assoc state ::erase? false)
-
-    [\! {::erase?   false      ;; turn on erase
-         ::garbage? true}]     (assoc state ::erase? true)
-
-    [\> {::erase?   false      ;; close garbage
-         ::garbage? true}]     (assoc state ::garbage? false)
-
-    [_  {::erase?   false
-         ::garbage? true       ;; increase garbage count
-         ::garbage-count gc}]  (assoc state ::garbage-count (inc gc))
-
-    [\< {::erase?   false      ;; start garbage
-         ::garbage? false}]    (assoc state ::garbage? true)
-
-    [\{ {::erase?   false
-         ::garbage? false      ;; new group
-         ::depth    d}]        (assoc state ::depth (inc d))
-
-    [\} {::erase?   false
-         ::garbage? false
-         ::depth    d          ;; close group
-         ::count    c}]        (assoc state ::depth (dec d)
-                                            ::count (+ c d))
-
-                               ;; ignore other characters
-    :else                      state))
-
-(defn character-reducer [states new-char]
-  (->> states
-       last
-       (get-new-state new-char)
-       (conj states)))
+    [_  {:erase? true :garbage? true}]  (assoc state :erase? false)    ;; erase char, flip erase
+    [\! {:garbage? true}]               (assoc state :erase? true)     ;; set erase
+    [\> {:garbage? true}]               (assoc state :garbage? false)  ;; close garbage
+    [_  {:garbage? true :gcount gc}]    (assoc state :gcount (inc gc)) ;; increase garbage count
+    [\< {:garbage? false}]              (assoc state :garbage? true)   ;; start garbage
+    [\{ {:depth d}]                     (assoc state :depth (inc d))   ;; new group
+    [\} {:depth d :count c}]            (assoc state :depth (dec d)    ;; close group
+                                                       :count (+ c d))
+    :else                               state))                        ;; ignore other characters
 
 (defn solve-puzzle [puzzle-input]
-  (->> puzzle-input
-       (reduce character-reducer
-               [{::erase? false ::garbage? false
-                 ::depth 0 ::count 0 ::garbage-count 0}])
-       last
-       pprint))
+  (reduce get-new-state
+          {:erase? false :garbage? false
+           :depth 0 :count 0 :gcount 0}
+          puzzle-input))
