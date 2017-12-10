@@ -32,4 +32,5 @@
 (defn -main [input-filename]
   (->> input-filename
        process-input
-       solve-puzzle))
+       solve-puzzle
+       println))

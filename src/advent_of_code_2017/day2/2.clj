@@ -19,4 +19,5 @@
 (defn -main [input-filename]
   (->> input-filename
        day2-1/process-input
-       solve-puzzle))
+       solve-puzzle
+       println))
