@@ -11,7 +11,7 @@
     [\< {:garbage? false}]              (assoc state :garbage? true)   ;; start garbage
     [\{ {:depth d}]                     (assoc state :depth (inc d))   ;; new group
     [\} {:depth d :count c}]            (assoc state :depth (dec d)    ;; close group
-                                                       :count (+ c d))
+                                                     :count (+ c d))
     :else                               state))                        ;; ignore other characters
 
 (defn solve-puzzle [puzzle-input]
