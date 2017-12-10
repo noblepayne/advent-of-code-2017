@@ -10,4 +10,5 @@
                  [ubergraph "0.4.0"]]
   :main ^:skip-aot advent-of-code-2017.core
   :target-path "target/%s"
-  :profiles {:uberjar {:aot :all}})
+  :profiles {:uberjar {:aot :all}}
+  :resource-paths ["inputs"])
