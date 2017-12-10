@@ -1,6 +1,5 @@
 (ns advent-of-code-2017.day9.2
-  (:require [clojure.core.match :refer [match]]
-            [clojure.pprint :refer [pprint]]))
+  (:require [clojure.core.match :refer [match]]))
 
 (defn get-new-state [state new-char]
   (match [new-char state]
@@ -16,6 +15,8 @@
 
 (defn solve-puzzle [puzzle-input]
   (reduce get-new-state
-          {:erase? false :garbage? false
-           :depth 0 :count 0 :gcount 0}
+          {:erase? false :garbage? false :depth 0 :count 0 :gcount 0}
           puzzle-input))
+
+(comment
+  (solve-puzzle (slurp "/tmp/input")))
