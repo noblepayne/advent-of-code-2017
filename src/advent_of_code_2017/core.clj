@@ -8,6 +8,8 @@
             [advent-of-code-2017.day2.2 :as day2-2]
             [advent-of-code-2017.day11.1 :as day11-1]
             [advent-of-code-2017.day11.2 :as day11-2]
+            [advent-of-code-2017.day12.1 :as day12-1]
+            [advent-of-code-2017.day12.2 :as day12-2]
    ))
 
 (def days
@@ -15,8 +17,10 @@
    :1-2  ["Halfway Around"   day1-2/-main]
    :2-1  ["Corrupt Checksum" day2-1/-main]
    :2-2  ["Evenly Divisible" day2-2/-main]
-   :11-1 ["Hexagon Hell" day11-1/-main]
-   :11-2 ["Hexagon Hell" day11-2/-main]
+   :11-1 ["Hexagon Hell"     day11-1/-main]
+   :11-2 ["Hexagon Hell"     day11-2/-main]
+   :12-1 ["Digital Plumber"  day12-1/-main]
+   :12-2 ["Plumber's Union"  day12-2/-main]
    })
 
 (defn -main

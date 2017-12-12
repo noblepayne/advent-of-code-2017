@@ -1,62 +1,64 @@
-(ns advent-of-code-2017.day12.1)
+(ns advent-of-code-2017.day12.1
+  (:require [clojure.string :as str]
+            [clojure.spec.alpha :as s]
+            [clojure.set :as set]))
 
-(defn direct-link? [node node-set]
-  (contains? node-set node))
+(defn get-input
+  "Build input map from file.
+   e.g (w/ strings rather than keywords)
+   {:0 #{:1 :2}
+    :1 #{:0}
+    :2 #{:0}"
+  [filename]
+  (->> filename
+       slurp
+       str/split-lines
+       (map #(str/split % #" <-> "))
+       (map #(vector (first %)
+                     (set (str/split (second %) #", "))))
+       (into {})))
 
-(defn direct-links [node world]
+(defn direct-link?
+  "Is node contained in links?"
+  [node links]
+  (contains? links node))
+
+(defn direct-links
+  "Lookup node's links in the world"
+  [node world]
   (get world node))
 
-(defn path-to-node? [our-node target-node world seen-set]
-  (let [dl (clojure.set/difference (direct-links our-node world) seen-set)]
-    (if (= our-node target-node)
-      true
-      (if (direct-link? target-node dl)
-        true
-        (some true? 
-              (map
-               #(path-to-node? % target-node world (conj seen-set our-node)) dl))))))
+(defn path-to-node?
+  "Is there a path from input-node to target-node in the world?"
+  ([world target-node our-node] (path-to-node? world target-node our-node #{})) ;; initial seen set is empty
+  ([world target-node our-node seen-set]
+   (let [unseen-links (set/difference (direct-links our-node world)             ;; filter out seen links
+                                      seen-set)]                                ;; to avoid loops
+     (if (= our-node target-node)
+       true                                                                     ;; always a path from self
+       (if (direct-link? target-node unseen-links)
+         true                                                                   ;; direct link?
+         (some true?
+               (map #(path-to-node? world                                       ;; is there a path through any of
+                                    target-node                                 ;; our direct (unseen) links?
+                                    %
+                                    (conj seen-set our-node))
+                    unseen-links)))))))
 
 
-(defn get-input [filename]
-  (->> filename
-      slurp
-      clojure.string/split-lines
-      (map #(clojure.string/split %
-                                  #" <-> "))
-      (map #(vector (first %) (clojure.string/split (second %) #", ")))
-      (map #(vector (first %) (set (second %))))
-      (into {})))
-
-(defn test-fn [inp tar]
-  (->> inp
+(defn find-group
+  "Find all nodes connected to target-node."
+  [world target-node]
+  (->> world
        keys
-       (map #(path-to-node? % tar inp #{}))
-       (filter true?)
-       count))
-
-;;;;;;;;; part 2
-
-(defn path-to-node-2? [our-node target-node world seen-set]
-  (let [dl (clojure.set/difference (direct-links our-node world) seen-set)]
-    (if (= our-node target-node)
-      our-node
-      (if (empty? dl)
-        nil
-        (if (direct-link? target-node dl)
-          our-node
-          (map #(path-to-node-2? % target-node world (conj seen-set our-node))
-               dl))))))
-
-(defn better-fn [inp tar]
-  (->> inp
-       keys
-       (filter #(path-to-node? % tar inp #{}))
+       (filter #(path-to-node? world target-node %))
        set))
 
-(defn solve-2 [world group-count]
-  (let [ks (keys world)]
-    (if (= 1 (count ks))
-      (inc group-count)
-      (let [k (first ks)
-            g (better-fn world k)]
-        (recur (reduce dissoc world g) (inc group-count))))))
+(defn -main
+  "How many nodes are connected to :0?"
+  [input-filename]
+  (-> input-filename
+      get-input
+      (find-group "0")
+      count
+      println))
