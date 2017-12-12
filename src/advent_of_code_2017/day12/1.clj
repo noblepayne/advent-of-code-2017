@@ -46,6 +46,22 @@
                     unseen-links)))))))
 
 
+(defn find-linked-nodes
+  ([world node] (find-linked-nodes world #{node} #{}))
+  ([world nodes-to-process seen-set]
+   (println nodes-to-process seen-set)
+   (if (empty? nodes-to-process)
+     seen-set
+     (let [[f & r]      nodes-to-process
+           links        (direct-links f world)
+           to-process   (set/difference (set/union (set links)
+                                                   (set r))
+                                        seen-set)
+           new-seen-set (conj seen-set f)]
+       (recur world
+              to-process
+              new-seen-set)))))
+
 (defn find-group
   "Find all nodes connected to target-node."
   [world target-node]
