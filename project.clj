@@ -7,7 +7,10 @@
                  [org.clojure/core.match "0.3.0-alpha5"]
                  [org.clojure/math.combinatorics "0.1.4"]
                  [org.clojure/test.check "0.10.0-alpha2"]
-                 [ubergraph "0.4.0"]]
+                 [ubergraph "0.4.0"]
+                 [criterium "0.4.4"]
+                 [org.clojure/data.finger-tree "0.0.2"]]
+
   :main ^:skip-aot advent-of-code-2017.core
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all}}
