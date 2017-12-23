@@ -2,7 +2,8 @@
   (:require [clojure.repl :refer :all]
             [clojure.pprint :refer [pprint]]
             [clojure.spec.alpha :as s]
-            [clojure.string :as str]))
+            [clojure.string :as str]
+            [clojure.core.async :as async]))
 
 
 (s/def ::reg string?)
@@ -103,8 +104,8 @@
        (map (fn [line]
               (let [[inst reg val] (str/split line #" ")]
                 (if val
-                  [inst reg (make-int val)]
-                  [inst reg]))))
+                  [inst (make-int reg) (make-int val)]
+                  [inst (make-int reg)]))))
        (map #(s/conform ::inst %))))
 
 (defn part1 [filename]

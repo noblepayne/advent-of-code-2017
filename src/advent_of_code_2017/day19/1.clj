@@ -63,7 +63,7 @@
   [(take-step r c d) d (conj seen ch) (inc steps)])
 
 
-(defn get-next [world curpos]
+(defn gspacemet-next [world curpos]
   (let [[[r c] d seen steps] curpos
         ch (get-char world r c)]
     (condp = ch
