@@ -51,7 +51,7 @@
       (get-reg-val world val)
       val)))
 
-(defn inc-pos [world]
+/home/wes/work_ssh/id_rsa(defn inc-pos [world]
   (let [curpos (:curpos world)]
     (assoc world :curpos (inc curpos))))
 
@@ -84,7 +84,7 @@
   (let [rreg (second reg)
         rregval (get-val-or-reg world reg)
         rval (get-val-or-reg world val)
-        rworld world];(assoc world :ran-instructions (conj (:ran-instructions world) op))]
+        rworld (assoc world :ran-instructions (conj (:ran-instructions world) op))]
     (condp = (keyword op)
       :set (set-op rworld rreg rval)
       :sub (sub-op rworld rreg rval)
@@ -118,6 +118,13 @@
                 [inst (make-int reg) (make-int val)])))
        (s/conform ::insts)))
 
+(defn part-1 [filename]
+  (->> filename
+       get-input
+       (run-instructions (make-world))
+       :ran-instructions
+       frequencies
+       :mul))
 
 ;;;;;;;
 
@@ -132,3 +139,11 @@
 ;; at d=b (the final round of the d loop) we reach the f gate, since f=0 h is incremented.
 ;; the outer, b gate is controlled by a jump reached only when b = c, stepping b by its step size.
 ;; Count the number of non-prime b's and this will be the final sum of h.
+
+(defn part-2 [c b step]
+  (let [xf (comp (map (complement prime?))
+                 (filter identity)
+                 (map (fn [_] 1)))]
+    (transduce xf
+               +
+               (range b (inc c) step))))
