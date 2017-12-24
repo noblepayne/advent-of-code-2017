@@ -1,0 +1,32 @@
+set b 57
+set c b
+jnz a 2
+	jnz 1 5
+mul b 100
+sub b -100000
+set c b
+sub c -17000 ;; c finished being set
+	set f 1                 ;; f set to 1 after loop
+	set d 2
+		set e 2
+			set g d
+			mul g e
+			sub g b
+			jnz g 2       ;; set at d = 1/2 b
+				set f 0
+			sub e -1
+			set g e
+			sub g b        
+			jnz g -8     ;; loops over e   escape when e = b
+		sub d -1
+		set g d
+		sub g b
+		jnz g -13           ;; loops over d (inc) escape when d = b
+	jnz f 2
+		sub h -1
+	set g b
+	sub g c
+	jnz g 2               ;; escape when b = c
+		jnz 1 3 ;; end
+	sub b -17             ;; add 17
+	jnz 1 -23             ;; loop over b
