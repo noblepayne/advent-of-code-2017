@@ -51,7 +51,7 @@
       (get-reg-val world val)
       val)))
 
-/home/wes/work_ssh/id_rsa(defn inc-pos [world]
+(defn inc-pos [world]
   (let [curpos (:curpos world)]
     (assoc world :curpos (inc curpos))))
 
