@@ -10,7 +10,8 @@
                  [ubergraph "0.4.0"]
                  [criterium "0.4.4"]
                  [org.clojure/data.finger-tree "0.0.2"]
-                 [org.clojure/core.async "0.3.465"]]
+                 [org.clojure/core.async "0.3.465"]
+                 [net.mikera/core.matrix "0.61.0"]]
 
   :main ^:skip-aot advent-of-code-2017.core
   :target-path "target/%s"
